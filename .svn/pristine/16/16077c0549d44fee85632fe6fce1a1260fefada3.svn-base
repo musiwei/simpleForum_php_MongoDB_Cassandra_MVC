@@ -1,0 +1,54 @@
+<?php
+
+include_once("model/Post.php");
+include_once("model/dbConn.php");
+
+class PostModel {
+        public $db;
+        function __construct(){
+            $this->db=$GLOBALS['db'];
+        }
+        
+        public function getSinglePost($_id){
+        	$collection = $this->db->author;
+        	$post = $collection->findOne(array('_id' => new MongoId($_id)));
+        	return $post;
+        }
+        
+        public function getAllPostsByDate($order, $date){
+            if(isset($date)){
+            	$dateMongo = new MongoDate(strtotime($date));
+            	
+            	$collection = $this->db->post;
+            	$posts = $collection->find(array("publish date" => array('$gt' => $dateMongo)));
+            	return $posts;
+            } else{
+            	
+            	$collection = $this->db->post;
+            	$posts = $collection->find();
+            	return $posts;
+            }
+        }
+        
+        public function getTagsOfSinglePost($_id){
+        	$collection = $this->db->author;
+        	$post = $collection->findOne(array('_id' => new MongoId($_id)));
+        	return $post['tags'];
+        }
+        
+        public function getAllPostsFromAuthorID($author_id, $order){
+        	$collection = $this->db->post;
+        	$posts = $collection->find(array('_id' => new MongoId($author_id)));
+        	return $posts;
+        }
+        
+        public function addCommentsToPaticularPost($postId, $author, $submitDate, $body){
+        	$submitDateMongo = new MongoDate(strtotime($submitDate));
+        	$collection = $this->db->post;
+        	$posts = $collection->findOne(array('_id' => new MongoId($postId)));
+        	$newdata = array('0'=>array('author' => $author,
+					  'submit date' => $submitDate,
+					  'body' => $body));
+        	$collection->update(array('_id' => new MongoId($_id)), $newdata);
+        } 
+}

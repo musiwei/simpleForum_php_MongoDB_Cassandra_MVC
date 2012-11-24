@@ -1,0 +1,64 @@
+<?php
+
+include_once("model/Post.php");
+
+class PostModel {
+        function __construct(){
+            
+        }
+        
+        public function getSinglePost($_id){
+        	$conn = new Mongo("mongodb://192.168.1.6:27017"); //60.240.205.199
+        	$db = $conn->blog;
+        	$collection = $db->author;
+        	$post = $collection->findOne(array('_id' => new MongoId($_id)));
+        	return $post;
+        }
+        
+        public function getAllPostsByDate($order, $date){
+            if(isset($date)){
+            	$dateMongo = new MongoDate(strtotime($date));
+            	
+            	$conn = new Mongo("mongodb://192.168.1.6:27017"); //60.240.205.199
+            	$db = $conn->blog;
+            	$collection = $db->post;
+            	$posts = $collection->find(array("publish date" => array('$gt' => $dateMongo)));
+            	return $posts;
+            } else{
+            	$conn = new Mongo("mongodb://192.168.1.6:27017"); //60.240.205.199
+            	$db = $conn->blog;
+            	$collection = $db->post;
+            	$posts = $collection->find();
+            	return $posts;
+            }
+        }
+        
+        public function getTagsOfSinglePost($_id){
+        	$conn = new Mongo("mongodb://192.168.1.6:27017"); //60.240.205.199
+        	$db = $conn->blog;
+        	$collection = $db->author;
+        	$post = $collection->findOne(array('_id' => new MongoId($_id)));
+        	return $post['tags'];
+        }
+        
+        public function getAllPostsFromAuthorID($author_id, $order){
+        	$conn = new Mongo("mongodb://192.168.1.6:27017"); //60.240.205.199
+        	$db = $conn->blog;
+        	$collection = $db->post;
+        	$posts = $collection->find(array('_id' => new MongoId($author_id)));
+        	return $posts;
+        }
+        
+        public function addCommentsToPaticularPost($postId, $author, $submitDate, $body){
+        	$submitDateMongo = new MongoDate(strtotime($submitDate));
+        	
+        	$conn = new Mongo("mongodb://192.168.1.6:27017"); //60.240.205.199
+        	$db = $conn->blog;
+        	$collection = $db->post;
+        	$posts = $collection->findOne(array('_id' => new MongoId($postId)));
+        	$newdata = array('0'=>array('author' => $author,
+					  'submit date' => $submitDate,
+					  'body' => $body));
+        	$collection->update(array('_id' => new MongoId($_id)), $newdata);
+        } 
+}

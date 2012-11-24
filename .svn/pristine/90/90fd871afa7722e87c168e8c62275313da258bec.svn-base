@@ -1,0 +1,59 @@
+<?php
+
+include_once("model/Book.php");
+
+class Model {
+	public function createDatabase(){
+		$conn = new Mongo("mongodb://192.168.1.6:27017"); //60.240.205.199
+		
+		$db = $conn->blog;
+		
+		$collection = $db->author;
+		$author1 = array('name' => 'Jason', 'email' => 'Jason@admin.com', 'post address' => '2 Stanley st, Burwood, NSW 2134', 'phone' => '0450222222');
+		$author2 = array('name' => 'Siwei', 'email' => 'Siwei@admin.com', 'post address' => '3 Stanley st, Burwood, NSW 2134', 'phone' => '0450333333');
+		$author3 = array('name' => 'Ying', 'email' => 'Ying@admin.com', 'post address' => '4 Stanley st, Burwood, NSW 2134', 'phone' => '0450444444');
+		$collection->insert($author1);
+		$collection->insert($author2);
+		$collection->insert($author3);
+		
+		$collection = $db->tag;
+		$tag1 = array('name' => 'happy');
+		$tag2 = array('name' => 'sad');
+		$tag3 = array('name' => 'normal');
+		$collection->insert($tag1);
+		$collection->insert($tag2);
+		$collection->insert($tag3);
+	}
+	
+	public function getSinglePost($_id){
+		$conn = new Mongo("mongodb://192.168.1.6:27017"); //60.240.205.199
+		$db = $conn->blog;
+		$collection = $db->post;
+		$post = $collection->findOne(array('_id' => $_id));
+		return $post;
+	}
+	
+	public function getBookList()
+	{
+		// here goes some hardcoded values to simulate the database
+		return array(
+			"Jungle Book" => new Book("Jungle Book", "R. Kipling", "A classic book."),
+			"Moonwalker" => new Book("Moonwalker", "J. Walker", ""),
+			"PHP for Dummies" => new Book("PHP for Dummies", "Some Smart Guy", "")
+		);
+	}
+	
+	public function getBook($title)
+	{
+		// we use the previous function to get all the books and then we return the requested one.
+		// in a real life scenario this will be done through a db select command
+		$allBooks = $this->getBookList();
+		//$this->createDatabase(); // create sample data for mongoDB
+		$this->getSinglePost('508b653fa625a24491000000');
+		return $allBooks[$title];
+	}
+	
+	
+}
+
+?>

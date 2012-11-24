@@ -1,0 +1,22 @@
+<html>
+<head></head>
+
+<body>
+
+<?php 
+
+	echo 'Title:' . $post->title . '<br/>';
+	echo 'Date:' . $post->publishDate . '<br/>';
+	echo 'Author:' . $post->author . '<br/>';
+	echo 'Tag:';
+	foreach($post->tags as $tagName) {echo $tagName; echo ' ';} echo '<br/>';
+	echo 'Body:' . $post->body . '<br/>';
+	echo '<br/><br/>';
+	echo 'Comment: ';echo '<br/>';
+	foreach($post->comments as $comment) {echo 'Author: ' .$comment['author'] . '<br/>'; 
+										  echo 'Submit date: ' .$comment['submit date'] . '<br/>'; 
+										  echo 'Comment body:' .$comment['body']. '<br/><br/>';} 
+?>
+
+</body>
+</html>

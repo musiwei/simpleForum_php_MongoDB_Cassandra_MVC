@@ -1,0 +1,14 @@
+<html>
+<head></head>
+
+<body>
+
+<table>
+	<tr><td>Title</td><td>Date</td></tr>
+        <tr><td>Author</td><td></td></tr>
+        <tr><td>Description</td><td></td></tr>
+        <tr><td></td><td></td></tr>
+</table>
+
+</body>
+</html>

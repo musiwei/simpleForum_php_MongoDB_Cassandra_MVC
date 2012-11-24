@@ -1,0 +1,17 @@
+<?php
+
+class Author {
+	public $id;
+	public $name;
+	public $address;
+        public $phone;
+	
+	public function __construct($id, $name, $address, $phone)  
+    {  
+        $this->title = $title;
+        $this->author = $author;
+        $this->description = $description;
+    }
+}
+
+?>

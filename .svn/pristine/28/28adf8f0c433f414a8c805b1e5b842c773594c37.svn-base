@@ -1,0 +1,119 @@
+<?php
+
+include_once("model/Tag.php");
+include_once("model/Post.php");
+include_once("model/dbConn.php");
+
+class PostModel {
+        public $db;
+        function __construct(){
+            $this->db=$GLOBALS['db'];
+        }
+        
+        public function findAuthorNameByAuthorStringId($aId){
+        	// find author name by author id in string format
+        	$collection_author = $this->db->author;
+        	$author = $collection_author->findOne(array('_id' => new MongoId($aId)));
+        	return $author['name'];
+        }
+        
+        public function findTagNameListByTagStringIds($tIds){
+        	// find tag names by tag id list in string format
+            $collection_tag = $this->db->tag;
+            $tagNames = array();
+        	foreach($tIds as $tId){
+        		$tag = $collection_tag->findOne(array('_id' => new MongoId($tId)));
+        		array_push($tagNames, $tag['name']);
+        	}
+        	return $tagNames;
+        }
+        
+        public function commentsFormating($comments){
+        	$formatedComments = array();
+        	foreach($comments as $comment){
+        		$comment['author'] = $this->findAuthorNameByAuthorStringId($comment['author']);
+        		$comment['submit date'] = $this->convertMongoDateToRegularDateFormat($comment['submit date']);
+        		array_push($formatedComments, $comment);
+        	}
+        	return $formatedComments;
+        }
+        
+        public function convertMongoDateToRegularDateFormat($mongoDate){
+        	// Convert the date format
+        	return $date = date('Y-m-d H:i:s', $mongoDate->sec);
+        }
+        
+        public function getSinglePost($_id){
+        	$collection = $this->db->post;
+        	$p = $collection->findOne(array('_id' => new MongoId($_id)));
+        	$p['author'] = $this->findAuthorNameByAuthorStringId($p['author']);
+        	$p['publish date'] = $this->convertMongoDateToRegularDateFormat($p['publish date']);
+        	$p['tags'] = $this->findTagNameListByTagStringIds($p['tags']);
+        	$p['comments'] = $this->commentsFormating($p['comments']);
+        	$singlePostObject = new Post($p['_id'], $p['title'], $p['body'], $p['author'], $p['publish date'], $p['tags'], $p['comments']); // convert into a post object
+        	return $singlePostObject; 
+        }
+        
+        public function getAllPosts($order){
+        	$collection = $this->db->post;
+        	$posts = $collection->find();
+        	$PostObjects = array();
+        	foreach ($posts as $p){
+        		$p['author'] = $this->findAuthorNameByAuthorStringId($p['author']);
+        		$p['publish date'] = $this->convertMongoDateToRegularDateFormat($p['publish date']);
+        		// create post object, and save in an array
+        		array_push($PostObjects, new Post($p['_id'], $p['title'], $p['body'], $p['author'], $p['publish date'], $p['tags'], $p['comments']));
+        	}
+        	return $PostObjects;
+        }
+        
+        public function getAllPostsByDate($order, $date){
+            if(isset($date)){
+            	$dateMongo = new MongoDate(strtotime($date));
+            	
+            	$collection = $this->db->post;
+            	$posts = $collection->find(array("publish date" => array('$gt' => $dateMongo)));
+            	$PostObjects = array();
+            	foreach ($posts as $p){
+            		array_push($PostObjects, new Post($p['_id'], $p['title'], $p['body'], $p['author'], $p['publish date'], $p['tags'], $p['comments']));
+            	}
+            	return $PostObjects;
+            }
+        }
+        
+        public function getTagsOfSinglePost($_id){
+        	// get tags of a specific post
+        	$collection = $this->db->post;
+        	$post = $collection->findOne(array('_id' => new MongoId($_id)));
+        	// find all the tag names, and save as tag objects.
+        	$collection = $this->db->tag;
+        	foreach ($post['tagIds'] as $tId){
+        		array_push($TagObjects, $collection_post->find(array('_id' => new MongoId($pId))));
+        	}
+        	return $TagObjects;
+        }
+        
+        public function getAllPostsByAuthorID($author_id, $order){
+        	$collection = $this->db->post;
+        	$posts = $collection->find(array('author' => $author_id));
+        	$PostObjects = array();
+            foreach ($posts as $p){
+            	$p['author'] = $this->findAuthorNameByAuthorStringId($p['author']);
+            	$p['publish date'] = $this->convertMongoDateToRegularDateFormat($p['publish date']);
+            	array_push($PostObjects, new Post($p['_id'], $p['title'], $p['body'], $p['author'], $p['publish date'], $p['tags'], $p['comments']));
+            }
+            return $PostObjects;
+        }
+        
+        public function addCommentsToPaticularPost($postId, $author, $submitDate, $body){
+        	$submitDateMongo = new MongoDate(strtotime($submitDate));
+        	$collection = $this->db->post;
+			$posts = $collection->findOne(array('_id' => new MongoId($postId)));
+			$newComment = array('author' => $author,
+				  'submit date' => new MongoDate(strtotime($submitDate)),
+			      'body' => $body);
+			$collection->update(array('_id' => new MongoId($postId)), array('$push' => array("comments" => $newComment)));
+        } 
+        
+
+}

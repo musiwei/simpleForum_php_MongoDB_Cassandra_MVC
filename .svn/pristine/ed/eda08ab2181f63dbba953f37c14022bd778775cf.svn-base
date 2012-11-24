@@ -1,0 +1,12 @@
+<?php
+
+include_once("model/Tag.php");
+
+class TagModel {
+        function __construct(){
+            
+        }
+        public function getAllPosts($tagName){
+            
+        }
+}

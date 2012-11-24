@@ -1,0 +1,28 @@
+<?php
+include_once("model/AuthorModel.php");
+
+
+class AuthorModelController {
+	public $AuthorModel;
+
+	public function __construct()
+	{
+		$this->AuthorModel = new AuthorModel();
+	}
+
+	public function invoke()
+	{
+		if (isset($_GET['author']))
+		{
+			$author = $this->AuthorModel->getSingleAuthor($_GET['author']);
+			include 'view/viewAuthorProfile.php';
+		}
+		if (isset($_POST['name']))
+		{
+			$author = $this->AuthorModel->updateAuthor($_POST['name'], $_POST['address'], $_POST['phone'], $_POST['email']);
+			include 'view/viewAuthorProfile.php';
+		}
+	}
+}
+
+?>

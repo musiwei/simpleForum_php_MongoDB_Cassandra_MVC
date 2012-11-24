@@ -1,0 +1,25 @@
+<?php
+
+include_once("model/Author.php");
+include_once("model/dbConn.php");
+
+class AuthorModel {
+        public $db;
+        function __construct(){
+            $this->db=$GLOBALS['db'];
+        }
+        
+        public function getSingleAuthor($name){
+        	$collection = $this->db->author;
+        	$author = $collection->findOne(array('name' => $name));
+        	$singleAuthorObject = new Author($author['_id'], $author['name'], $author['post address'], $author['phone'], $author['email']); // convert into an author object
+        	return $singleAuthorObject;
+        }
+       
+        public function updateAuthor($name, $address, $phone, $email){
+        	
+            $collection = $this->db->author;
+            $newdata = array('name' => $name, 'email' => $email, 'post address' => $address, 'phone' => $phone);
+            $collection->update(array("name" => $name), $newdata);
+        }
+}

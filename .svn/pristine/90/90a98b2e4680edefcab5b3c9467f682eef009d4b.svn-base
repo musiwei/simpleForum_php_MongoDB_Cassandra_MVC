@@ -1,0 +1,19 @@
+<html>
+<head></head>
+
+<body>
+
+<table>
+	<tr><td>Title</td><td>Author</td><td>Publish date</td></tr>
+	<?php 
+
+		foreach ($posts as $title => $post)
+		{
+			echo '<tr><td><a href="index.php?postId='.$post->id.'">'.$post->title.'</a></td><td><a href="index.php?author='.$post->author.'">'.$post->author.'</td><td>'.$post->publishDate.'</td></tr>';
+		}
+
+	?>
+</table>
+
+</body>
+</html>

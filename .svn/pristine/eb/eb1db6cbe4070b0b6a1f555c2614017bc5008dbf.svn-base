@@ -1,0 +1,18 @@
+<?php 
+	include_once("controller/Controller.php");
+
+	$controller = new Controller();
+	$controller->invoke();
+	
+	$conn = new Mongo("mongodb://localhost:27017");
+	$db = $conn->blog;
+	$collection = $db->author;
+	//$author = array('name' => 'caleng', 'email' => 'admin@admin.com', 'post address' => '1 Stanley st, Burwood, NSW 2134', 'phone' => '0450111111');
+	//$collection->insert($author);
+	$cursor = $collection->find();
+	echo "<br><br>";
+	foreach ($cursor as $cur) {
+		echo $cur['name'];
+		
+	}
+?>

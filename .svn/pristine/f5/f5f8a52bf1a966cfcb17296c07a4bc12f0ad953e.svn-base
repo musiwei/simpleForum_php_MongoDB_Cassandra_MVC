@@ -1,0 +1,23 @@
+<?php
+include_once("model/TagModel.php");
+
+
+class TagModelController {
+	public $TagModel;
+
+	public function __construct()
+	{
+		$this->TagModel = new TagModel();
+	}
+
+	public function invoke()
+	{
+		if (isset($_GET['tag']))
+		{
+			$postIDs = $this->TagModel->getAllPostsByTagName($_GET['tag']);
+			include 'view/viewPostsByTag.php';
+		}
+	}
+}
+
+?>

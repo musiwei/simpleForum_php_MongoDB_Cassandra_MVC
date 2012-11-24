@@ -1,0 +1,21 @@
+<?php
+
+include_once("model/Post.php");
+
+class PostModel {
+        function __construct(){
+            
+        }
+        
+        public function getAllPosts($order="asc",$date,$tag,$id){
+            if(isset($date)){
+                
+            }
+        }
+        public function getAllPostsFromAuthor($author_id,$order="asc"){
+            
+        }
+        public function addComments($postId){
+            
+        } 
+}

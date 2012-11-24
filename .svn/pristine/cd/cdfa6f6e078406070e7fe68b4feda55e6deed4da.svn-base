@@ -1,0 +1,21 @@
+<?php
+
+include_once("model/Author.php");
+
+class AuthorModel {
+        
+        function __construct($conn){
+            
+        }
+        
+        public function getSingleAuthor($_id){
+        	$conn = new Mongo("mongodb://192.168.1.6:27017"); //60.240.205.199
+        	$db = $conn->blog;
+        	$collection = $db->author;
+        	$author = $collection->findOne(array('_id' => new MongoId($_id)));
+        	return $author;
+        }
+       
+		
+	
+}

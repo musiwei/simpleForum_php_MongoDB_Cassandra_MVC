@@ -1,0 +1,46 @@
+<?php
+include_once("model/PostModel.php");
+include_once("model/AuthorModel.php");
+
+
+class PostModelController {
+	public $PostModel;
+	public $AuthorModel;
+
+	public function __construct()
+	{
+		$this->PostModel = new PostModel();
+		$this->AuthorModel = new AuthorModel();
+	}
+
+	public function invoke()
+	{
+		if (isset($_GET['postId']))
+		{
+			$post = $this->PostModel->getSinglePost($_GET['postId']);
+			include 'view/viewSinglePost.php';
+		}
+		else if (isset($_GET['date']))
+		{
+			$posts = $this->PostModel->getAllPostsByDate($_GET['postId']);
+			include 'view/viewPosts.php';
+		}
+		else if (isset($_GET['author']))
+		{
+			$author = $this->AuthorModel->getSingleAuthor($_GET['author']);
+			include 'view/viewAuthorProfile.php';
+// 			$posts = $this->PostModel->getAllPostsByAuthorID($_GET['author']);
+// 			include 'view/viewPosts.php';
+		}else{
+			$posts = $this->PostModel->getAllPosts(1);
+			include 'view/viewPosts.php';
+		}
+		if (isset($_POST['postId'])){
+			$posts = $this->PostModel->addCommentsToPaticularPost($_POST['postId'], $_POST['author'], $_POST['submitdate'], $_POST['body']);
+			include 'view/viewPosts.php';
+			include 'view/viewPosts.php';
+		}
+	}
+}
+
+?>

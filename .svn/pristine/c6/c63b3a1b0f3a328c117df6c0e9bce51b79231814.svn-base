@@ -1,0 +1,34 @@
+<?php 
+	include_once("controller/Controller.php");
+
+	$controller = new Controller();
+	$controller->invoke();
+	
+	/*Below is how you add a sample new post.
+	$conn = new Mongo("mongodb://192.168.1.6:27017"); //60.240.205.199
+	$db = $conn->blog;
+	$collection = $db->post;
+	$tags = array('508b8a65a625a2b07e00000b');//tags are linked by tag id
+	$comments = array('0'=>array('author' => '508b8a65a625a2b07e000008',// comments are embedded into post
+					  'submit date' => '2012-10-27 20:25:20',
+					  'body' => 'You are awesome'));
+	$post = array('title' => 'I am happy!', 
+				  'body' => 'When an individual becomes happy, the network effect can be measured up to three degrees. One person\'s happiness triggers a chain reaction that benefits not only his friends, but his friends\' friends, and his friends\' friends\' friends. The effect lasts for up to one year.', 
+			      'publish date' => '2012-10-27 20:20:20', 
+				  'tags' => $tags,
+				  'author' => '508b8a65a625a2b07e000009',
+				  'comments' => $comments,
+			);
+	$collection->insert($post);
+	*/
+	
+// 	$db = $conn->blog;
+// 	$collection = $db->author;
+// 	$post = $collection->findOne(array('_id' => new MongoId('508b8a65a625a2b07e000007')));
+// 	print_r($post);
+// 	$cursor = $collection->find();
+// 	echo "<br><br>";
+// 	foreach ($cursor as $cur) {
+// 		echo $cur['name'];
+// 	}
+?>

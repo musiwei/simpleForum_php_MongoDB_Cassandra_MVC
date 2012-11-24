@@ -1,0 +1,23 @@
+<?php
+
+include_once("model/Tag.php");
+include_once("model/Post.php");
+include_once("model/dbConn.php");
+
+class TagModel {
+        public $db;
+        function __construct(){
+            $this->db=$GLOBALS['db'];
+        }
+        public function getAllPostsByTagName($tagName){
+        	// get post ids of a specific tag
+        	$collection = $this->db->tag;
+        	$tag = $collection->findOne(array('name' => $tagName));
+        	// find all the posts, and save as post objects.
+        	$collection_post = $this->db->post;
+        	foreach ($tag['posts'] as $pId){
+        		array_push($PostObjects, $collection_post->find(array('_id' => new MongoId($pId))));
+        	}
+        	return $PostObjects;
+        }
+}

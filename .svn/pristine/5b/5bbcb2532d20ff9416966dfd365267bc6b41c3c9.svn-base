@@ -1,0 +1,20 @@
+<?php
+
+class Post {
+	public $id;
+	public $title;
+	public $body;
+        public $publishDate;
+        public $tags;
+	
+	function __construct($id, $title, $body, $publishDate, $tags) {
+            $this->id = $id;
+            $this->title = $title;
+            $this->body = $body;
+            $this->publishDate = $publishDate;
+            $this->tags = $tags;
+        }
+
+}
+
+?>

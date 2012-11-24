@@ -1,0 +1,17 @@
+<?php
+
+include_once("model/Tag.php");
+include_once("model/dbConn.php");
+
+class TagModel {
+        public $db;
+        function __construct(){
+            $this->db=$GLOBALS['db'];
+        }
+        public function getAllPostsByTagName($tagName){
+        	$collection = $this->db->tag;
+        	$tag = $collection->findOne(array('name' => $tagName));
+        	$posts = $author['posts'];
+        	return $posts;
+        }
+}

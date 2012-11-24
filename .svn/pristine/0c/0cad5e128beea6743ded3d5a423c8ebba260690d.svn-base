@@ -1,0 +1,53 @@
+<?php 
+	include_once("controller/Controller.php");
+
+	$controller = new Controller();
+	$controller->invoke();
+	
+	$conn = new Mongo("mongodb://192.168.1.6:27017"); //60.240.205.199
+	$db = $conn->blog;
+	$collection = $db->author;
+	$author = $collection->findOne(array('_id' => new MongoId('508b8a65a625a2b07e000007')));
+	echo $author['_id'];
+	
+	/*Below is how you add a sample new tag.
+	$conn = new Mongo("mongodb://192.168.1.6:27017"); //60.240.205.199
+	$db = $conn->blog;
+	$collection = $db->tag;
+	$posts = array('508b9715a625a2b07e000013');
+	$tag1 = array('name' => 'happy', 'posts' => $posts);
+	$tag2 = array('name' => 'sad');
+	$tag3 = array('name' => 'normal');
+	$collection->insert($tag1);
+	$collection->insert($tag2);
+	$collection->insert($tag3);
+	*/
+	
+	/*Below is how you add a sample new post.
+	$conn = new Mongo("mongodb://192.168.1.6:27017"); //60.240.205.199
+	$db = $conn->blog;
+	$collection = $db->post;
+	$tags = array('508b8a65a625a2b07e00000b');//tags are linked by tag id
+	$comments = array('0'=>array('author' => '508b8a65a625a2b07e000008',// comments are embedded into post
+					  'submit date' => new MongoDate(strtotime("2012-10-27 20:25:20")),
+					  'body' => 'You are awesome'));
+	$post = array('title' => 'I am happy!', 
+				  'body' => 'When an individual becomes happy, the network effect can be measured up to three degrees. One person\'s happiness triggers a chain reaction that benefits not only his friends, but his friends\' friends, and his friends\' friends\' friends. The effect lasts for up to one year.', 
+			      'publish date' => new MongoDate(strtotime("2012-10-27 20:20:20")), 
+				  'tags' => $tags,
+				  'author' => '508b8a65a625a2b07e000009',
+				  'comments' => $comments,
+			);
+	$collection->insert($post);
+	*/
+	
+// 	$db = $conn->blog;
+// 	$collection = $db->author;
+// 	$post = $collection->findOne(array('_id' => new MongoId('508b8a65a625a2b07e000007')));
+// 	print_r($post);
+// 	$cursor = $collection->find();
+// 	echo "<br><br>";
+// 	foreach ($cursor as $cur) {
+// 		echo $cur['name'];
+// 	}
+?>

@@ -1,0 +1,28 @@
+<?php
+
+include_once("model/Author.php");
+
+class AuthorModel {
+        
+        function __construct($conn){
+            
+        }
+        
+        public function getSingleAuthor($name){
+        	$conn = new Mongo("mongodb://192.168.1.6:27017"); //60.240.205.199
+        	$db = $conn->blog;
+        	$collection = $db->author;
+        	$author = $collection->findOne(array('name' => $name));
+        	$singleAuthor = new Author($author['_id'], $author['name'], $author['post address'], $author['phone'], $author['email']);
+        	return $singleAuthor;
+        }
+       
+		public function updateAuthor($name, $address, $phone, $email){
+        	$conn = new Mongo("mongodb://192.168.1.6:27017"); //60.240.205.199
+        	$db = $conn->blog;
+        	$collection = $db->author;
+        	$newdata = array('name' => $name, 'email' => $email, 'post address' => $address, 'phone' => $phone);
+        	$collection->update(array("name" => $name), $newdata);
+		}
+	
+}

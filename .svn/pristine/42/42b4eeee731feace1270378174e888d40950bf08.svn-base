@@ -1,0 +1,21 @@
+<html>
+<head></head>
+
+<body>
+	<?php
+	include_once("controller/FrontControllerInterface.php");
+	include_once("controller/AuthorModelController.php");
+	$options["controller"] = "AuthorModelController";
+	$controller = new FrontController($options);
+	$controller->run();
+	?>
+	<form action="welcome.php" method="post">
+	Name: <input type="text" name="nameTextBox" value="<?php echo $author->name?>"/>
+	Email: <input type="text" name="emailTextBox" value="<?php echo $author->email?>"/>
+	Address: <input type="text" name="addressTextBox" value="<?php echo $author->address?>" />
+	phone: <input type="text" name="phoneTextBox" value="phone" />
+	<input type="submit" value="Submit" />
+	</form>
+
+</body>
+</html>
